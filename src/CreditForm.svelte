@@ -1,0 +1,40 @@
+<script>
+    import CardNumber from './CardNumber.svelte';
+    import CardName from './CardName.svelte';
+    import CardExpiration from './CardExpiration.svelte';
+    import CardCVV from './CardCVV.svelte';
+</script>
+
+<div class="wrapper">
+    <CardNumber/>
+    <CardName/>
+    <div class="expCVV">
+        <CardExpiration/> 
+        <CardCVV />
+    </div>
+    <button>Submit</button>
+</div>
+
+<style>
+    .wrapper{
+        max-width: 420px;
+        height: 30vh;
+        padding: 100px 18px; 
+        margin: 0 auto;
+        background: #eee;
+        border-radius: 10px;
+    }
+    .expCVV{
+        padding-top: 15px;
+        display: flex
+    }
+    button{
+        width: 100%;
+        height: 10vh;
+        border-radius: 5px;
+        background: blue;
+        color: #eee;
+        font-family: 'Ubuntu', sans-serif;
+        font-size: 1.3rem;
+    }
+</style>
