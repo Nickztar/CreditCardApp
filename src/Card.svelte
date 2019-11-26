@@ -12,7 +12,7 @@
         monthVisible = false;
         setTimeout(()=>{monthVisible = true}, 100);
     }
-    function yearChange(){ //Toggles the monthVisible variable with a small timeout
+    function yearChange(){ //Toggles the yearVisible variable with a small timeout
         yearVisible = false;
         setTimeout(()=>{yearVisible = true}, 100);
     }
