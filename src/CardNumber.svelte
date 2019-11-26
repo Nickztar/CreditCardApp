@@ -1,24 +1,23 @@
 <script>
-    import { type } from './store.js';
-    let creditNumber = "";
+    import { type, creditnumber } from './store.js';
+    let localNumber = $creditnumber; 
     function handleKeyup(){
-        type.set(detectCardType(creditNumber.replace(/\s/g, '')));
+        type.set(detectCardType(localNumber.replace(/\s/g, '')));
         format();
+        creditnumber.set(localNumber);
     }
-    
     function format(){
-        let cleanString = creditNumber.replace(/\s/g, ''); //Remove spaces
+        let cleanString = localNumber.replace(/\s/g, ''); //Remove spaces
         let strArr = cleanString.match(/.{1,4}/g) || [""]; //Split string into array of 4 chars
         let newStr = strArr.join(" "); //Join the array into a string separated by space
-        creditNumber = newStr; //Update the creditcard value.
+        localNumber = newStr; //Update the creditcard value.
     }
 
     function detectCardType(number) {
         let re = {
-            electron: /^(4026|417500|4405|4508|4844|4913|4917)\d+$/,
+            visa: /^(4026|417500|4405|4508|4844|4913|4917)\d+$/,
             maestro: /^(5018|5020|5038|5612|5893|6304|6759|6761|6762|6763|0604|6390)\d+$/,
             dankort: /^(5019)\d+$/,
-            interpayment: /^(636)\d+$/,
             unionpay: /^(62|88)\d+$/,
             visa: /^4[0-9]{12}(?:[0-9]{3})?$/,
             mastercard: /^5[1-5][0-9]{14}$/,
@@ -32,12 +31,12 @@
                 return key
             }
         }
-        return "Visa";
+        return "visa";
     }
 </script>
 
 <label for="creditNumber">Card Number</label>
-<input type="text" name="numbers" id="creditNumber" placeholder="#### #### #### ####" bind:value={creditNumber} pattern="[0-9]*" on:keyup={handleKeyup} />
+<input type="text" name="numbers" id="creditNumber" placeholder="#### #### #### ####" bind:value= {localNumber} pattern="[0-9]*" on:keyup={handleKeyup} />
 
 <style>
     input{
