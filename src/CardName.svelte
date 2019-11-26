@@ -1,9 +1,9 @@
 <script>
-    let creditName;
+    import { holderName } from './store.js';
 </script>
 
 <label for="creditName">Card name</label>
-<input type="text" name="name" id="creditName" bind:value={creditName}>
+<input type="text" name="name" id="creditName" bind:value={$holderName}>
 
 <style>
     input{

@@ -1,10 +1,10 @@
 <script>
-    import { type, creditnumber } from './store.js';
-    let localNumber = $creditnumber; 
+    import { type, creditNumber } from './store.js';
+    let localNumber = $creditNumber; 
     function handleKeyup(){
         type.set(detectCardType(localNumber.replace(/\s/g, '')));
         format();
-        creditnumber.set(localNumber);
+        creditNumber.set(localNumber);
     }
     function format(){
         let cleanString = localNumber.replace(/\s/g, ''); //Remove spaces
@@ -36,7 +36,7 @@
 </script>
 
 <label for="creditNumber">Card Number</label>
-<input type="text" name="numbers" id="creditNumber" placeholder="#### #### #### ####" bind:value= {localNumber} pattern="[0-9]*" on:keyup={handleKeyup} />
+<input type="text" name="numbers" id="creditNumber" placeholder="#### #### #### ####" bind:value= {localNumber} pattern="[0-9]*" on:keyup={handleKeyup} maxlength="19"/>
 
 <style>
     input{
