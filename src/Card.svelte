@@ -1,45 +1,100 @@
 <script>
     import { type, creditNumber, holderName, month, year } from './store.js';
-    import { fly } from 'svelte/transition';
+    import { fly, fade } from 'svelte/transition';
+    import { elasticOut } from 'svelte/easing';
+    let placeholderNumber = strToArray('#### #### #### ####');
 
-    const randomImage = Math.floor(Math.random()*24)+1; //Sets the cardbackground to a random image from 1-25
-    
-    let expireMonth, expireYear; //Stores the elementDivs
+    const randomImage = Math.floor(Math.random()*24)+1; 
     let monthVisible, yearVisible = true;
-    month.subscribe(() => monthChange()); //Everytime month updates we execute monthChange
-    year.subscribe(() => yearChange()); //Everytime year updates we execute yearChange
-    function monthChange(){ //Toggles the monthVisible variable with a small timeout
+    month.subscribe(() => {
         monthVisible = false;
         setTimeout(()=>{monthVisible = true}, 100);
-    }
-    function yearChange(){ //Toggles the yearVisible variable with a small timeout
+    });
+    year.subscribe(() => {
         yearVisible = false;
         setTimeout(()=>{yearVisible = true}, 100);
+    });
+    type.subscribe((value) => {
+        switch (value){
+            case 'amex':
+                placeholderNumber = strToArray('#### ###### #####');
+                break;
+            case 'dinersclub':
+                placeholderNumber = strToArray('#### ###### ####');
+                break;
+            default:
+                placeholderNumber = strToArray('#### #### #### ####');
+        }
+    });
+    creditNumber.subscribe((value) => {
+        let valueArray = strToArray(value);
+        placeholderNumber = placeholderNumber.map((base, index)=>{
+            if (valueArray[index] != null){
+                return valueArray[index];
+            }
+            else if (base == ' '){
+                return ' ';
+            }
+            else{
+                return '#';
+            }
+        })
+    });
+
+    function refreshDiv(number){
+        let el = document.getElementById(`${number}`);
+        if (el != null){
+            console.log(el, number);
+            el.style.display = 'none';
+            setTimeout(()=>{el.style.display = 'block'}, 100);
+        }
     }
+    function strToArray(str) {
+        return str.split('');
+    }
+    function spinFromRight(node, { duration }) {
+		return {
+			duration,
+			css: t => {
+				const eased = elasticOut(t);
+                return `transform: translateX(10px) rotate(${eased * 45}deg);`
+			}
+		};
+	}
 </script>
 
 <div class="wrapping">
     <img src="./images/{randomImage}.jpeg" alt="A random image as background" class="mainCard">
     <img src="./images/{$type}.png" alt="The type of card entered" class="typeLogo">
     <img src="./images/chip.png" alt="The chip of the card" class="cardChip">
-    <input type="text" class="cardNumber" bind:value={$creditNumber} placeholder="#### #### #### ####" readonly>
+    <div class="cardNumber">
+        {#each placeholderNumber as number}
+            <span class="spanFix" in:fly='{{y:15, duration:400}}' out:fly='{{y:-15, duration:300}}'>{number}</span>
+        {/each}
+    </div>
     <div class="miniWrap">
         <div class="nameWrap">
-            <label for="holder" class="miniLabel">Card Holder</label>
-            <input type="text" name="holderName" id="holderName" placeholder="Nicholas Broström" bind:value={$holderName} readonly>
+            <label for="holderName" class="miniLabel">Card Holder</label>
+            <div id="holderName">
+                {#if !$holderName}
+                    <div in:fly='{{duration:500, y:20}}'>Placeholder Name</div>
+                {:else}
+                    {#each $holderName as letter}
+                        <div in:spinFromRight='{{duration:75}}' out:fade='{{duration:75}}'>{letter}</div>
+                    {/each}
+                {/if}
+            </div>
         </div>
         <div class="dateWrap">
             <label for="expires" class="miniLabel">Expires</label>
             <div class="expiresData">
                 {#if monthVisible}
-                    <div in:fly='{{y:15, duration:400}}' out:fly='{{y:-15, duration:300}}' bind:this={expireMonth} id="expireMonth" class="dates">{$month || 'MM'}</div>
+                    <div in:fly='{{y:15, duration:400}}' out:fly='{{y:-15, duration:300}}' id="expireMonth" class="dates">{$month || 'MM'}</div>
                 {/if}
-                <!-- <input type="text" name="expireMonth" id="expireMonth" class="dates" placeholder="MM" bind:value={$month} readonly > -->
                 <section id="separator"> / </section>
                 {#if yearVisible}
-                    <div in:fly='{{y:15, duration:400}}' out:fly='{{y:-15, duration:300}}' bind:this={expireYear} id="expireYear" class="dates">{$year || 'YY'}</div>
+                    <div in:fly='{{y:15, duration:400}}' out:fly='{{y:-15, duration:300}}' id="expireYear" class="dates">{$year || 'YY'}</div>
                 {/if}
-                <!-- <input type="text" name="expireYear" id="expireYear" class="dates" placeholder="YY" bind:value={$year} readonly> -->
             </div>
         </div>
     </div>
@@ -73,6 +128,8 @@
         width: 15%;
     }
     .cardNumber{
+        display: flex;
+        white-space: pre;
         position: absolute;
         top: 54%;
         left: 7%;
@@ -85,6 +142,9 @@
         font-family: 'Source Code Pro', monospace;
         /* background: rgba(27, 27, 27, 0.226); */
         /* border-radius: 10px; */
+    }
+    .spanFix{
+        display: inline-block;
     }
     *::placeholder{
         color: #fff;
@@ -123,13 +183,17 @@
     }
     .nameWrap{
         margin-right: 13%;
+        width: 75%;
     }
     #holderName{
+        display: flex;
         color: #fff;
         background: none;
         border: none;
+        height: auto;
         padding: 0;
         margin: 0;
+        white-space: pre;
     }
     .miniLabel{
         text-shadow: 2px 2px 7px rgba(27, 27, 27, 0.8);

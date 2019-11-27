@@ -23,6 +23,7 @@
         margin: 0 auto;
         background: #eee;
         border-radius: 10px;
+        box-shadow: 0 30px 60px 0 rgba(90, 116, 148, 0.4);
     }
     .expCVV{
         padding-top: 15px;

@@ -1,42 +1,74 @@
 <script>
     import { type, creditNumber } from './store.js';
     let localNumber = $creditNumber; 
+    let maxNumberLength = 19;
     function handleKeyup(){
-        type.set(detectCardType(localNumber.replace(/\s/g, '')));
-        format();
+        const localType = detectType(localNumber.replace(/\s/g, ''))
+        type.set(localType);
+        switch (localType){
+            case 'amex':
+                formatAmex();
+                break;
+            case 'dinersclub':
+                formatDiners();
+                break;
+            default:
+                formatStandard();
+        }
         creditNumber.set(localNumber);
     }
-    function format(){
-        let cleanString = localNumber.replace(/\s/g, ''); //Remove spaces
-        let strArr = cleanString.match(/.{1,4}/g) || [""]; //Split string into array of 4 chars
-        let newStr = strArr.join(" "); //Join the array into a string separated by space
-        localNumber = newStr; //Update the creditcard value.
+    function formatStandard(){
+        const cleanString = localNumber.replace(/\s/g, ''); //Remove spaces
+        const formatedString = cleanString.replace(/(\d{4})/, '$1 ').replace(/(\d{4}) (\d{4})/, '$1 $2 ').replace(/(\d{4}) (\d{4}) (\d{4})/, '$1 $2 $3 ')
+        maxNumberLength = 19;
+        localNumber = formatedString; //Update the creditcard value.
     }
+    function formatAmex(){
+        const cleanString = localNumber.replace(/\s/g, ''); //Remove spaces
+        const formatedString = cleanString.replace(/(\d{4})/, '$1 ').replace(/(\d{4}) (\d{6})/, '$1 $2 ')
+        maxNumberLength = 17;
+        localNumber = formatedString; //Update the creditcard value.
+    }
+    function formatDiners(){
+        const cleanString = localNumber.replace(/\s/g, ''); //Remove spaces
+        const formatedString = cleanString.replace(/(\d{4})/, '$1 ').replace(/(\d{4}) (\d{6})/, '$1 $2 ');
+        maxNumberLength = 16;
+        localNumber = formatedString; //Update the creditcard value.
+    }
+    function detectType(number){
+        let re = new RegExp('^4')
+        if (number.match(re) != null) return 'visa'
 
-    function detectCardType(number) {
-        let re = {
-            visa: /^(4026|417500|4405|4508|4844|4913|4917)\d+$/,
-            maestro: /^(5018|5020|5038|5612|5893|6304|6759|6761|6762|6763|0604|6390)\d+$/,
-            dankort: /^(5019)\d+$/,
-            unionpay: /^(62|88)\d+$/,
-            visa: /^4[0-9]{12}(?:[0-9]{3})?$/,
-            mastercard: /^5[1-5][0-9]{14}$/,
-            amex: /^3[47][0-9]{13}$/,
-            diners: /^3(?:0[0-5]|[68][0-9])[0-9]{11}$/,
-            discover: /^6(?:011|5[0-9]{2})[0-9]{12}$/,
-            jcb: /^(?:2131|1800|35\d{3})\d{11}$/
-        }
-        for(let key in re) {
-            if(re[key].test(number)) {
-                return key
-            }
-        }
-        return "visa";
+        re = new RegExp('^(34|37)')
+        if (number.match(re) != null) return 'amex'
+
+        re = new RegExp(/^(5018|5020|5038|5612|5893|6304|6759|6761|6762|6763|0604|6390)\d+$/)
+        if (number.match(re) != null) return 'maestro'
+
+        re = new RegExp('^5[1-5]')
+        if (number.match(re) != null) return 'mastercard'
+        
+        re = new RegExp('^6011')
+        if (number.match(re) != null) return 'discover'
+
+        re = new RegExp('^62')
+        if (number.match(re) != null) return 'unionpay'
+
+        re = new RegExp('^9792')
+        if (number.match(re) != null) return 'troy'
+
+        re = new RegExp('^3(?:0([0-5]|9)|[689]\\d?)\\d{0,11}')
+        if (number.match(re) != null) return 'dinersclub'
+
+        re = new RegExp('^35(2[89]|[3-8])')
+        if (number.match(re) != null) return 'jcb'
+
+        return 'visa' // default type
     }
 </script>
 
 <label for="creditNumber">Card Number</label>
-<input type="text" name="numbers" id="creditNumber" placeholder="#### #### #### ####" bind:value= {localNumber} pattern="[0-9]*" on:keyup={handleKeyup} maxlength="19"/>
+<input type="text" name="numbers" id="creditNumber" placeholder="#### #### #### ####" bind:value= {localNumber} pattern="[0-9]*" on:keyup={handleKeyup} maxlength="{maxNumberLength}"/>
 
 <style>
     input{
