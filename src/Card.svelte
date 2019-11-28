@@ -2,8 +2,8 @@
     import { type, creditNumber, holderName, month, year } from './store.js';
     import { fly, fade } from 'svelte/transition';
     import { elasticOut } from 'svelte/easing';
+    
     let placeholderNumber = strToArray('#### #### #### ####');
-
     const randomImage = Math.floor(Math.random()*24)+1; 
     let monthVisible, yearVisible = true;
     month.subscribe(() => {
@@ -38,17 +38,9 @@
             else{
                 return '#';
             }
-        })
+        });
     });
-
-    function refreshDiv(number){
-        let el = document.getElementById(`${number}`);
-        if (el != null){
-            console.log(el, number);
-            el.style.display = 'none';
-            setTimeout(()=>{el.style.display = 'block'}, 100);
-        }
-    }
+    
     function strToArray(str) {
         return str.split('');
     }
@@ -69,7 +61,7 @@
     <img src="./images/chip.png" alt="The chip of the card" class="cardChip">
     <div class="cardNumber">
         {#each placeholderNumber as number}
-            <span class="spanFix" in:fly='{{y:15, duration:400}}' out:fly='{{y:-15, duration:300}}'>{number}</span>
+            <span class="spanFix" in:fly='{{y:15, duration:300}}' out:fly='{{y:-15, duration:200}}'>{number}</span>
         {/each}
     </div>
     <div class="miniWrap">
