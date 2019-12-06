@@ -1,14 +1,4 @@
 <script>
-<<<<<<< HEAD
-	import Card from './Card.svelte';
-	import CreditForm from './CreditForm.svelte'
-</script>
-
-<Card/>
-<CreditForm/>
-
-<style>
-=======
 	import FrontCard from './FrontCard.svelte';
 	import CreditForm from './CreditForm.svelte';
 	import BackCard from './BackCard.svelte';
@@ -30,5 +20,4 @@
 	width: 350px;
 	height: 160px;
 }
->>>>>>> pepega
 </style>
