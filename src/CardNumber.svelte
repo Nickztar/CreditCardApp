@@ -17,6 +17,7 @@
                     formatStandard();
             }
         }
+        localNumber = localNumber.replace(/[A-Za-z!@#$%^&*()]/g, '');
         creditNumber.set(localNumber);
     }
     function formatStandard(){
