@@ -1,6 +1,6 @@
 import { writable } from 'svelte/store';
 
-export const type = writable("Visa");
+export const type = writable("visa");
 //Number
 export const creditNumber = writable("");
 export const numberFocused = writable(false);
