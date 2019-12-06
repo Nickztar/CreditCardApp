@@ -30,10 +30,10 @@
 <style>
     .nameWrap{
         margin-right: 13%;
-        width: 73%;
+        width: 72%;
         padding: 3px;
     }
-    #holderName{
+    div #holderName{
         display: flex;
         color: #fff;
         background: none;
@@ -42,9 +42,7 @@
         width: 200px;
         padding: 0;
         margin: 0;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        white-space: pre;
     }
     .miniLabel{
         text-shadow: 2px 2px 7px rgba(27, 27, 27, 0.8);
