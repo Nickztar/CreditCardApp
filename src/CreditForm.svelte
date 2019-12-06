@@ -3,6 +3,9 @@
     import CardName from './CardName.svelte';
     import CardExpiration from './CardExpiration.svelte';
     import CardCVV from './CardCVV.svelte';
+    function bamboz(){
+        alert("You've been hacked kid!")
+    }
 </script>
 
 <div class="wrapper">
@@ -12,7 +15,7 @@
         <CardExpiration/> 
         <CardCVV />
     </div>
-    <button>Submit</button>
+    <button on:click={bamboz}>Submit</button>
 </div>
 
 <style>
@@ -37,5 +40,10 @@
         color: #eee;
         font-family: 'Ubuntu', sans-serif;
         font-size: 1.3rem;
+    }
+    @media screen and (max-width: 395px){
+        .wrapper{
+            height: 36vh;
+        }
     }
 </style>

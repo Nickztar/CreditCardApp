@@ -1,5 +1,5 @@
 <script>
-    import { year } from './store.js';
+    import { year, expireFocused } from './store.js';
     let selectedYear = "";
     let years = [];
     let current = new Date().getFullYear();
@@ -9,8 +9,14 @@
     function updateYear(){
         year.set(selectedYear.toString().slice(-2));
     }
+    function focus(){
+        expireFocused.set(true);
+    }
+    function blur(){
+        expireFocused.set(false);
+    }
 </script>
-<select name="year" id="expireYear" bind:value={selectedYear} on:change={updateYear}>
+<select name="year" id="expireYear" bind:value={selectedYear} on:change={updateYear} on:focus={focus} on:blur={blur}>
     <option disabled=true selected>Year</option>
     {#each years as year}
         <option value="{year}">{year}</option>

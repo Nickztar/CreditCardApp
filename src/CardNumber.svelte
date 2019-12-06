@@ -1,19 +1,21 @@
 <script>
-    import { type, creditNumber } from './store.js';
+    import { type, creditNumber, numberFocused } from './store.js';
     let localNumber = $creditNumber; 
     let maxNumberLength = 19;
     function handleKeyup(){
         const localType = detectType(localNumber.replace(/\s/g, ''))
         type.set(localType);
-        switch (localType){
-            case 'amex':
-                formatAmex();
-                break;
-            case 'dinersclub':
-                formatDiners();
-                break;
-            default:
-                formatStandard();
+        if (event.keyCode !== 8){
+            switch (localType){
+                case 'amex':
+                    formatAmex();
+                    break;
+                case 'dinersclub':
+                    formatDiners();
+                    break;
+                default:
+                    formatStandard();
+            }
         }
         creditNumber.set(localNumber);
     }
@@ -65,10 +67,16 @@
 
         return 'visa' // default type
     }
+    function focus(){
+        numberFocused.set(true);
+    }
+    function blur(){
+        numberFocused.set(false);
+    }
 </script>
 
 <label for="creditNumber">Card Number</label>
-<input type="text" name="numbers" id="creditNumber" placeholder="#### #### #### ####" bind:value= {localNumber} pattern="[0-9]*" on:keyup={handleKeyup} maxlength="{maxNumberLength}"/>
+<input type="text" name="numbers" id="creditNumber" placeholder="#### #### #### ####" bind:value= {localNumber} pattern="[0-9]*" on:keyup={handleKeyup} maxlength="{maxNumberLength}" on:focus={focus} on:blur={blur}/>
 
 <style>
     input{
