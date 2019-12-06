@@ -23,4 +23,18 @@
         grid-template-columns: 1fr 1fr;
         grid-gap: 20px;
     }
+<<<<<<< HEAD
+=======
+    @media screen and (max-width: 420px){
+        .dateInputs{
+            grid-gap: 10px;
+        }
+    }
+    @media screen and (max-width: 395px){
+        .dateInputs{
+            grid-template-columns: 1fr;
+            grid-gap: 0px;
+        }
+    }
+>>>>>>> pepega
 </style>

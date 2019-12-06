@@ -1,9 +1,23 @@
 <script>
+<<<<<<< HEAD
     let creditName;
 </script>
 
 <label for="creditName">Card name</label>
 <input type="text" name="name" id="creditName" bind:value={creditName}>
+=======
+    import { holderName, nameFocused } from './store.js';
+    function focus(){
+        nameFocused.set(true);
+    }
+    function blur(){
+        nameFocused.set(false);
+    }
+</script>
+
+<label for="creditName">Card name</label>
+<input maxlength="20" type="text" name="name" id="creditName" bind:value={$holderName} placeholder="Placeholder Name" on:focus={focus} on:blur={blur}>
+>>>>>>> pepega
 
 <style>
     input{

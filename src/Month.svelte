@@ -1,9 +1,23 @@
 <script>
+<<<<<<< HEAD
     let expireMonth;
     let months = ["01","02","03","04","05","06","07","08","09","10","11","12"];
 </script>
 
 <select name="month" id="expireMonth" bind:value = {expireMonth}>
+=======
+    import { month, expireFocused } from './store.js';
+    let months = ["01","02","03","04","05","06","07","08","09","10","11","12"];
+    function focus(){
+        expireFocused.set(true);
+    }
+    function blur(){
+        expireFocused.set(false);
+    }
+</script>
+
+<select name="month" id="expireMonth" bind:value={$month} on:focus={focus} on:blur={blur}>
+>>>>>>> pepega
     <option disabled=true selected>Month</option>
     {#each months as month}
         <option value="{month}">{month}</option>

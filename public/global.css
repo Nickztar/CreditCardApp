@@ -65,3 +65,19 @@ button:not(:disabled):active {
 button:focus {
 	border-color: #666;
 }
+<<<<<<< HEAD
+=======
+.transformIn{
+	transform: rotateY(180deg);
+}
+.transformOut{
+	transform: rotateY(-180deg);
+}
+.focused{
+	border: 2px solid rgba(129, 195, 233, 0.829) !important; 
+	border-radius: 5px;
+	background-color: rgba(255, 255, 255, .15);  
+	backdrop-filter: blur(5px);
+	transition: all 0.4s ease-out;
+}
+>>>>>>> pepega
